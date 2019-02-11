@@ -1,0 +1,10 @@
+service:
+https://blog.csdn.net/javazejian/article/details/52709857
+
+IntentService:
+https://blog.csdn.net/javazejian/article/details/52426425
+
+多个客户端bindService,onBind会执行几次？
+多次startService对应多次onStartCommond，多次bindService只有第一次会执行onBind，后面的调用无需执行onBind() Connection中也可以返回同一个IBinder对象。
+
+前台服务和后台服务的区别？

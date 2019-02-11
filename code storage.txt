@@ -1,0 +1,23 @@
+反射获取hide方法：
+            try {
+                Class<android.view.inputmethod.InputMethodManager> c = android.view.inputmethod.InputMethodManager.class;
+                Method method = c.getMethod("showSoftInputUnchecked", int.class, ResultReceiver.class);
+                method.setAccessible(true);
+                method.invoke(getSystemService(Context.INPUT_METHOD_SERVICE), 0, null);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+反射获取hide类的方法：
+                try {
+                    Method method = Class.forName("android.os.SystemProperties").getMethod("get", String.class);
+                    try {
+                        versionName = method.invoke(Class.forName("android.os.SystemProperties").newInstance(), "ro.miui.ui.version.name").toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+invoke的第一个参数对于静态方法应该设置为null，所以上面第一个参数无效。

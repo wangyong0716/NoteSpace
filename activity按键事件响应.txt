@@ -1,0 +1,46 @@
+sirius菜单执行流程：
+入口都在dispatchKeyEvent中：
+    /**
+     * Called to process key events.  You can override this to intercept all
+     * key events before they are dispatched to the window.  Be sure to call
+     * this implementation for key events that should be handled normally.
+     *
+     * @param event The key event.
+     *
+     * @return boolean Return true if this event was consumed.
+     */
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        onUserInteraction();
+
+        // Let action bars open menus in response to the menu key prioritized over
+        // the window handling it
+        final int keyCode = event.getKeyCode();
+        if (keyCode == KeyEvent.KEYCODE_MENU &&
+                mActionBar != null && mActionBar.onMenuKeyEvent(event)) {
+            return true;
+        }
+
+        Window win = getWindow();
+        if (win.superDispatchKeyEvent(event)) {
+            return true;
+        }
+        View decor = mDecor;
+        if (decor == null) decor = win.getDecorView();
+        return event.dispatch(this, decor != null
+                ? decor.getKeyDispatcherState() : null, this);
+    }
+
+
+
+Activity.dispatchKeyEvent
+-> ToolbarActionBar.openOptionsMenu
+-> ToolbarWidgetWrapper.showOverflowMenu
+-> mToolbar.showOverflowMenu
+mToolBar是Activity中通过调用setActionBar传入进来的。如果没有调用该函数，上面的流程就不会继续执行，如果调用了，菜单按钮的打开操作就会被上面的操作拦截;
+
+getWindow()返回的是一个com.android.internal.policy.MiuiPhoneWindow实例
+-> MiuiPhoneWindow.superDispatchKeyEvent
+-> PhoneWindow.superDispatchKeyEvent
+-> DecorView.superDispatchKeyEvent(拦截返回事件，如果当前DecorView已指定ActionMode,则关闭ActionMode，消耗这次返回按键事件)
+
+

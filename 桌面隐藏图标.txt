@@ -1,0 +1,23 @@
+在manifest的入口activity里面intent-filter中设置<data></data>元素。
+
+比如：
+
+<activity android:name=".MainActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <data android:host="MainActivity" android:scheme="com.tq.time" />
+        <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
+</activity>
+
+
+注意，android:scheme是大小写敏感的，必须以小写字母开头
+也就是这个MainActivity可以响应Uri为com.android.example://AuthActivity的特定 Intent
+
+但是为什么加入这个之后app就不显示图标了呢？
+
+
+      因为我们把app的入口Activity申明为由接收隐士的Intent来启动，这样自然也就不会显示图标了。
+如果需要显示图标的话而且也必须响应上述Uri的话，那么我们可以在该Activity中再加入一个intent-filter标签，将data元素移到新建的标签中。
+
+这样应用既可以显示图标又可以响应特定的Uri了。

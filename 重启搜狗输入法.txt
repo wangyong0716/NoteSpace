@@ -1,0 +1,1 @@
+killall fcitx;fcitx;killall sogou-qimpanel;sogou-qimpanel

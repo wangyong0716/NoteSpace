@@ -1,0 +1,79 @@
+1,任务接受：与产品沟通后收到jira；
+2，任务进度与产品协调；
+3，新建本地分支开始任务；
+4，完成任务提交：repo upload 而不是git push；
+5，git上面添加reviewer；
+
+
+周一前修改jira上面bug状态，周二前提交代码，周三早上锁库，周四解锁。
+
+提交代码：
+git add .
+git commit -as/--amend
+repo upload .
+
+创建本地分支：
+git checkout -b wy -t libra/v8-alpha   在本地建立一个分支和远程分支对应
+查看代码历史：
+git blame file
+git log -p file
+
+查看手机线程占用CPU, 内存命令：
+adb shell
+top -m 10 -s cpu
+
+查看Service列表
+adb shell service list
+检查Service是否存在
+adb shell service check phone
+
+adb shell ps
+
+查看内存：
+adb shell dumpsys meminfo com.example.wangyong.testapplication -d
+
+(1), postDelayed method does not count time which device spends in deep sleep
+
+
+java运算:
+运算符"="是右结合,但是运算都是从左到右,如array[a++] = array[b++] + array[c++];计算顺序依次是a++, b++, c++.
+
+
+8.刷机
+以红米note 2为例，使用ota线刷到手机
+ （1）下载ota到指定目录，解压缩  ota网址为： http://ota.pt.miui.com/，注意选择对应机型的ota
+ （2）手机打开USB权限，连接到计算机
+ （3）adb reboot bootloader （手机进入fastboot）
+ （4）到ota下载目录下， fastboot（列出fastboot选项）
+ （5）sudo fastboot devices ，注意fastboot需要root权限
+ （6）注意在已下载ota目录下有flash_all.sh脚本
+ （7）chmod a+x flash_all.sh （对flash_all.sh可执行权限）
+ （8）sudo ./flash_all.sh 开始刷机
+注：Linux: fastboot 需要Root权限： sudo <脚本名>
+
+
+没有root查看文件：
+shell@android:/data $ run-as com.your.package  
+run-as com.your.package  
+shell@android:/data/data/com.your.package $ cd /data/data/com.your.package  
+cd /data/data/com.your.package  
+shell@android:/data/data/com.your.package $ ls  
+ls  
+cache  
+databases  
+lib  
+shared_prefs  
+shell@android:/data/data/com.your.package $ cd databases  
+cd databases  
+shell@android:/data/data/com.your.package/databases $ ls  
+yourpackagename.db  
+$ cat preferences.db > /mnt/sdcard/yourpackagename.db  
+
+echo:
+echo -n 不换行输出
+echo -e "" 特殊字符会自动转义，如制表符可以直接使用\t而不不用\\t自行转义
+echo "" > 覆盖输出
+echo "" >> 文件尾添加输出
+
+shell下删除文件第三行：
+sed -i 3d system/etc/hosts

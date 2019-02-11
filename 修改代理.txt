@@ -1,0 +1,6 @@
+连接我的测试环境方法如下：
+1.     安装根证书（一台手机只需要安装一次）
+http://wiki.n.miui.com/pages/viewpage.action?pageId=36897475
+2.     修改WLAN代理为手动，服务器填test.browser.miui.com，端口填10003
+http://wiki.n.miui.com/pages/viewpage.action?pageId=30222276
+

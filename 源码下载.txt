@@ -1,0 +1,33 @@
+下载全局搜索源码：
+cd workspace/
+
+mkdir quick-source
+
+cd quick-source/
+
+repo init -u ssh://邮箱前缀@git.mioffice.cn:29418/platform/manifest.git -b alpha -m miui-separate-app.xml --repo-url=ssh://邮箱前缀@git.mioffice.cn:29418/tools/repo.git​
+
+mkdir -p packages/apps/QuickSearchBox
+
+cd packages/apps/QuickSearchBox
+
+repo sync .
+
+git branch -a
+remotes/miui/v8-alpha ---> 最新体验版
+remotes/miui/v8-dev ---> 最新开发版
+
+
+
+
+
+
+
+下载所有源码：
+mkdir cancro
+
+cd cancro
+
+repo init -u ssh://wangyong5@git.mioffice.cn:29418/platform/manifest.git -b dev -m v8-n-libra-dev.xml --repo-url=ssh://wangyong5@git.mioffice.cn:29418/tools/repo.git
+
+repo sync -j8

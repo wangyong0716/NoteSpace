@@ -1,0 +1,15 @@
+You can check the descriptor limit on your device calling:
+ adb shell ulimit -n
+
+As a first step to solve the issue, you might need to figure out what kind of resources are leaking. You can figure out the process ID of your app by:
+ adb shell ps
+
+Then using the process ID, while your app is still running, you can check for open descriptors (you need root access):
+ adb shell ls -l  /proc/[YOUR_PROCESS_ID]/fd
+
+For the process 12345 it would be something like:
+ adb shell ls -l  /proc/12345/fd
+This will list the descriptors. On older android versions you can have 1024 items in the list, on Lollipop I saw 2048 as the default limit.
+
+You don't need root access to see the file descriptors: 
+ adb shell run-as $yourApplicationId ls -l /proc/$yourProcessId/fd/. E.g., adb shell run-as com.mycompany.myapplication ls -l /proc/12345/fd

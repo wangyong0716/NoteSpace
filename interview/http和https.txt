@@ -1,0 +1,19 @@
+总结：
+https = http + ssl
+http传输内容明文传输，获取到数据就直接获取到了内容，不安全，不能直接传输密码等敏感信息;
+https传输的内容均经过加密。安全套接字层超文本传输协议HTTPS
+
+SSl：Secure Sockets Layer
+数据加密、身份验证和消息完整性验证机制。SSL位于应用层和传输层之间。它能够为不论什么基于TCP等可靠连接的应用层协议提供安全性保证。
+
+
+
+面试遇到的疑难整理：
+1,http和https的区别：
+2,基本数据结构：list，set，map，table
+3,Activity的生命周期 onSaveInstance() force-stop kill
+4,fragment
+5,webview的交互方式：jbraintain？
+6,动画的更多实现方式: 
+7,与服务端通信的返回值
+8,进程间通信

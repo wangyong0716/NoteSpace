@@ -1,0 +1,15 @@
+http://www.jianshu.com/p/d126640eccb1
+
+显示掉帧log：
+    public void changeLimit() {
+        try {
+            Field field = Choreographer.class.getDeclaredField("SKIPPED_FRAME_WARNING_LIMIT");
+            field.setAccessible(true);
+            field.set(Choreographer.class, 1);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+
+

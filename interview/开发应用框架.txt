@@ -1,0 +1,22 @@
+MVC:
+M-Model : 业务逻辑和实体模型(biz/bean)
+V-View : 布局文件(XML)
+C-Controllor : 控制器(Activity)
+
+MVC虽然将界面呈现和逻辑代码分离了,但是在实际的Android开发中并没有完全起到想要的作用。View对应的XML文件实际能做的事情很少，很多界面显示由Controllor对应的Activity给做了，这样使得Activity变成了一个类似View和Controllor之间的一个东西。如果是小型项目，MVC是没任何问题的。
+
+
+MVP:
+M-Model : 业务逻辑和实体模型(biz/bean)
+V-View : 布局文件(XML)和Activity
+P-Presenter : 完成View和Model的交互
+
+尽管MVC设计的非常nice，但代码臃肿的问题仍然没有得到很好的解决，这个时候MVP就要登场了。可以看到MVP相对于MVC改动是非常大的。Activity直接当做View使用，代替MVC中C的是P-Presenter。对比MVC和MVP的模型图可以发现变化最大的是View和Model不在直接通信，所有交互的工作都通过Presenter来解决。既然两者都通过Presenter来通信，为了复用和可拓展性，MVP模式基于接口设计也就很好理解了。两者都通过Presenter来通信，好很多的好处，例如提高代码复用性啦、增加可拓展性啦、降低耦合度啦、代码逻辑更加清晰啦。但是、本来两个能直接通信的东西现在要通过第三方来通信，那势必会增加很多类。没错，MVP模式虽然很好，但是增加了很多的接口和实现类。代码逻辑虽然清晰，但是代码量要庞大一些。
+
+
+MVVM:
+M-Model : 实体模型(biz/bean)
+V-View : 布局文件(XML)
+VM-ViewModel : binder所在之处，对外暴露出公共属性，View和Model的绑定器
+
+MVVM和MVP一样，View和Model不允许直接交互。只能通过ViewModel。MVVM神奇的地方在于通过ViewModel隔离了UI层和业务逻辑层，降低程序的耦合度。而且，布局文件里可以进行视图逻辑！并且Model发生变化，View也随着发生变化。

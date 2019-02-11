@@ -1,0 +1,2 @@
+1,设置getter/setter样式：
+File——>Settings——>Code Style——>Java，点击右侧Code Generation，在Naming部分里Field的NamePrefix里添加前缀（m）

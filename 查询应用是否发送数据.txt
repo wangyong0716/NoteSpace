@@ -1,0 +1,104 @@
+实现：
+
+public static void printNetWork(Context context) {
+        int uid = 0;
+        try {
+            uid = context.getPackageManager().getPackageInfo("com.android.quicksearchbox", PackageManager.PERMISSION_GRANTED).applicationInfo.uid;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        File dir = new File("/proc/uid_stat/");
+        String[] children = dir.list();
+        if (!Arrays.asList(children).contains(String.valueOf(uid))) {
+            return;
+        }
+        File uidFileDir = new File("/proc/uid_stat/" + String.valueOf(uid));
+        File uidActualFileReceived = new File(uidFileDir, "tcp_rcv");
+        String textReceived = "0";
+
+        try {
+            BufferedReader brReceived = new BufferedReader(new FileReader(uidActualFileReceived));
+            String receivedLine;
+            if ((receivedLine = brReceived.readLine()) != null) {
+                textReceived = receivedLine;
+            }
+        } catch (IOException e) {
+        }
+
+        File uidActualFileSend = new File(uidFileDir, "tcp_snd");
+        String textSend = "0";
+
+        try {
+            BufferedReader brSend = new BufferedReader(new FileReader(uidActualFileSend));
+            String sendLine;
+            if ((sendLine = brSend.readLine()) != null) {
+                textSend = sendLine;
+            }
+        } catch (IOException e) {
+        }
+        Log.i("AAA", "tcp_rcv=" + textReceived + "|tcp_snd="+textSend);
+    }
+
+
+
+调用：
+Log.i("AAA","showCtaDeclaration");
+        Util.printNetWork(this);
+
+
+另一种实现：
+public void viewNet() {
+        String data = "";
+        /** 获取手机通过 2G/3G 接收的字节流量总数 */
+        data +=TrafficStats.getMobileRxBytes();
+        data +="    ";
+        /** 获取手机通过 2G/3G 接收的数据包总数 */
+        data +=TrafficStats.getMobileRxPackets();
+        data +="    ";
+        /** 获取手机通过 2G/3G 发出的字节流量总数 */
+        data +=TrafficStats.getMobileTxBytes();
+        data +="    ";
+        /** 获取手机通过 2G/3G 发出的数据包总数 */
+        data +=TrafficStats.getMobileTxPackets();
+        data +="    ";
+        /** 获取手机通过所有网络方式接收的字节流量总数(包括 wifi) */
+        data +=TrafficStats.getTotalRxBytes();
+        data +="    ";
+        /** 获取手机通过所有网络方式接收的数据包总数(包括 wifi) */
+        data +=TrafficStats.getTotalRxPackets();
+        data +="    ";
+        /** 获取手机通过所有网络方式发送的字节流量总数(包括 wifi) */
+        data +=TrafficStats.getTotalTxBytes();
+        data +="    ";
+        /** 获取手机通过所有网络方式发送的数据包总数(包括 wifi) */
+        data +=TrafficStats.getTotalTxPackets();
+        data +="    ";
+        /** 获取手机指定 UID 对应的应程序用通过所有网络方式接收的字节流量总数(包括 wifi) */
+        int uid =0;
+        try {
+            uid = getPackageManager().getPackageInfo("com.android.quicksearchbox", PackageManager.PERMISSION_GRANTED).applicationInfo.uid;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        data +=TrafficStats.getUidRxBytes(uid);
+        data +="    ";
+        /** 获取手机指定 UID 对应的应用程序通过所有网络方式发送的字节流量总数(包括 wifi) */
+        data +=TrafficStats.getUidTxBytes(uid);
+        data +="    ";
+        /** 获取手机指定 UID 对应的应程序用通过所有网络方式接收的字节流量总数(包括 wifi) */
+        int uid1 =0;
+        try {
+            uid1 = getPackageManager().getPackageInfo("com.xiaomi.providers.appindex", PackageManager.PERMISSION_GRANTED).applicationInfo.uid;
+        } catch (Exception e) {
+            Log.i("AAA","exception"+e.getMessage());
+            e.printStackTrace();
+        }
+        data +=TrafficStats.getUidRxBytes(uid1);
+        data +="    ";
+        /** 获取手机指定 UID 对应的应用程序通过所有网络方式发送的字节流量总数(包括 wifi) */
+        data +=TrafficStats.getUidTxBytes(uid1);
+        Log.i("AAA","netStatus="+data);
+    }
+
+调用：
+viewNet();

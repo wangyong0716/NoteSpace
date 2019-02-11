@@ -1,0 +1,36 @@
+1,
+ams的调用流程？
+
+
+清空task，killProcess, force-stop之间的区别？task和应用进程的关系？
+
+
+binder call的流程
+
+
+
+2,activity什么时候创建的？window什么时候创建？
+
+
+在执行activity onCreate之前的那个白色窗口是什么？
+实验表明，onCreate之前 activity已经实例化完成，但是window为空。
+
+window和activity的关系？
+https://blog.csdn.net/huachao1001/article/details/51866287
+
+启动activity的流程？
+
+
+3,ContentProvider中的SQLiteDatabase不应该被关闭：
+A content provider is created when its hosting process is created, and remains around for as long as the process does, so there is no need to close the database it will get closed as part of the kernel cleaning up the process's resources when the process is killed.
+否则，可能会出现异常：
+java.lang.IllegalStateException: Cannot perform this operation because the connection pool has been closed.
+
+
+什么是OCP(Open-Closed Principle)？
+面向对象设计的一个最核心原则，其他的原则？
+
+java的几种常见的设计模式
+
+
+

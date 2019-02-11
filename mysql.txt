@@ -1,0 +1,80 @@
+简单分享Ubuntu 16.04下安装MySQL的过程。
+
+首先执行下面三条命令：
+sudo apt-get install mysql-server
+sudo apt isntall mysql-client
+sudo apt install libmysqlclient-dev
+
+安装成功后可以通过下面的命令测试是否安装成功：
+sudo netstat -tap | grep mysql
+
+可以通过如下命令进入MySQL服务：
+mysql -uroot -p你的密码
+
+现在设置mysql允许远程访问，首先编辑文件/etc/mysql/mysql.conf.d/mysqld.cnf：
+sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
+注释掉bind-address = 127.0.0.1：
+保存退出，然后进入mysql服务，执行授权命令：
+grant all on *.* to root@'%' identified by '你的密码' with grant option;
+flush privileges;
+
+然后执行quit命令退出mysql服务，执行如下命令重启mysql：
+service mysql restart
+
+
+
+
+命令行链接我的数据库看一下能不能成功：
+mysql -u laowang -p -h 10.232.23.249
+密码:12345
+应该没问题，再用软件测一下，应该也没问题。
+
+
+
+
+修改自启动：
+修改/etc/init/mysql.conf文件：
+//------------
+start on runlevel [2345]
+stop on starting rc RUNLEVEL=[016]
+
+respawn
+respawn limit 2 5
+//-------------
+默认开机启动;
+runlevel修改为[345]即取消开机自启动。
+
+
+
+修改root密码：
+root登陆;
+use mysql;
+update user set authentication_string=PASSWORD("wangyong") where User='root';
+update user set plugin="mysql_native_password";
+flush privileges;
+如果忘记root密码无法登录，可以通过安全模式登陆。
+
+
+
+
+
+如何启动/停止/重启MySQL
+一、 启动方式
+1、使用 service 启动：service mysql start
+2、使用 mysqld 脚本启动：/etc/init.d/mysql start
+3、使用 safe_mysqld 启动：safe_mysql&
+二、停止
+1、使用 service 启动：service mysql stop
+2、使用 mysqld 脚本启动：/etc/init.d/mysql stop
+3、mysqladmin shutdown
+三、重启
+1、使用 service 启动：service mysql restart
+2、使用 mysqld 脚本启动：/etc/init.d/mysql restart
+
+查看mysql是否启动命令
+ps -aux | grep mysqld
+查看mysql是否在监听端口命令
+netstat -tl | grep mysql
+会看到如下类似内容：
+tcp 0 0 *:mysql *:* LISTEN
+

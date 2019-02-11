@@ -1,0 +1,33 @@
+(activity返回时候的动画效果)
+activityCloseEnterAnimation
+    When closing the current activity, this is the animation that is run on the next activity (which is entering the screen).
+activityCloseExitAnimation
+    When closing the current activity, this is the animation that is run on the current activity (which is exiting the screen).
+
+（activity开启的时候的动画效果）
+activityOpenEnterAnimation
+    When opening a new activity, this is the animation that is run on the next activity (which is entering the screen).
+activityOpenExitAnimation
+    When opening a new activity, this is the animation that is run on the previous activity (which is exiting the screen).
+
+（task返回的时候的动画效果）
+taskCloseEnterAnimation
+　　　　When opening an activity in a new task, this is the animation that is run on the activity of the old task (which is exiting the screen).
+taskCloseExitAnimation
+
+
+（task开启的时候的动画效果）
+taskOpenEnterAnimation
+　　　　When opening an activity in a new task, this is the animation that is run on the activity of the new task (which is entering the screen).
+taskOpenExitAnimation
+　　　　When opening an activity in a new task, this is the animation that is run on the activity of the old task (which is exiting the screen).
+
+（）
+taskToBackEnterAnimation
+　　　　When sending the current task to the background, this is the animation that is run on the top activity of the task behind it (which is entering the screen).
+taskToBackExitAnimation
+
+（）
+taskToFrontEnterAnimation
+
+taskToFrontExitAnimation

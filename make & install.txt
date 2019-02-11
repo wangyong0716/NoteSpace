@@ -1,0 +1,8 @@
+1,. build/envsetup.sh 
+2,lunch
+3,mm
+4,adb install -r **
+
+
+
+获取手机data/anr目录中的traces.txt文件：adb pull data/anr/traces.txt ./mytraces.txt

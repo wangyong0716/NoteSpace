@@ -1,0 +1,22 @@
+线程不安全的数据结构：
+ArrayList, LinkedList, HashMap
+
+线程安全的数据结构：
+Vector, ConcurrentLinkedQueue, Hashtable, ConcurrentHashMap
+
+https://blog.csdn.net/hellwhj/article/details/76576933
+
+
+
+
+
+ConcurrentLinkedQueue的实现原理分析
+如果我们要实现一个线程安全的队列有两种实现方式一种是使用阻塞算法，另一种是使用非阻塞算法。使用阻塞算法的队列可以用一个锁（入队和出队用同一把锁）或两个锁（入队和出队用不同的锁）等方式来实现，而非阻塞的实现方式则可以使用循环CAS的方式来实现
+
+http://ifeve.com/concurrentlinkedqueue/
+
+
+
+非阻塞同步算法与CAS(Compare and Swap)无锁算法:
+https://www.cnblogs.com/Mainz/p/3546347.html
+

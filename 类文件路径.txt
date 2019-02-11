@@ -1,0 +1,17 @@
+ActivityManagerNative.getDefault() -> ActivityManagerService.java:
+frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+
+WindowManagerService.java:
+frameworks/base/services/core/java/com/android/server/wm/WindowManagerService.java
+
+AppTransition.java:
+frameworks/base/services/core/java/com/android/server/wm/AppTransition.java
+
+
+ActivityThread.java:
+frameworks/base/core/java/android/app/ActivityThread.java
+ActivityManagerDebugConfig.java:
+frameworks/base/services/core/java/com/android/server/am/ActivityManagerDebugConfig.java
+ActivityStack.java:
+frameworks/base/services/core/java/com/android/server/am/ActivityStack.java
+

@@ -1,0 +1,10 @@
+HTTP也是用socket封装的，用起来更方便，由于是封装过的，它提供了更强大的功能。Android的HTTP(超文本传输协议)包括两种接口: 
+1、标准Java接口(java.net) —-HttpURLConnection，可以实现简单的基于URL的请求、响应功能。 
+2、Apache接口(org.appache.http)—-HttpClient，使用起来更方面更强大。 
+Android SDK中包含了HttpClient，在Android6.0版本直接删除了HttpClient类库，如果仍想使用则解决方法是：在libs中加入org.apache.http.legacy.jar 
+
+HttpURLConnection和HttpClient，这两种方式都支持HTTPS协议、以流的形式进行上传和下载、配置超时时间、IPv6、以及连接池等功能。
+
+HttpURLConnection是Java的标准类，继承自URLConnection，用它可以发送和接受任何类型和长度的数据，且预先不用知道数据流的长度，可以设置请求方式GET或POST、超时时间、缓存处理（4.0以上）等，HttpUrlConnection直接支持GZIP压缩。
+
+在Android 2.3版本及以后，HttpURLConnection则是最佳的选择，它的API简单，体积较小，因而非常适用于Android项目。压缩和缓存机制可以有效地减少网络访问的流量，在提升速度和省电方面也起到了较大的作用。

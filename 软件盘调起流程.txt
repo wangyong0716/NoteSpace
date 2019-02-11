@@ -1,0 +1,24 @@
+showInputMethod:
+(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE).showSoftInput(View view, int flags)
+ -> InputMethodManager.showSoftInput(View view, int flags, ResultReceiver resultReceiver)
+ -> InputMethodManagerService.showSoftInput(IInputMethodClient client, int flags, ResultReceiver resultReceiver)
+ -> InputMethodManagerService.showCurrentInputLocked(int flags, ResultReceiver resultReceiver)
+ -> executeOrSendMessage(mCurMethod, mCaller.obtainMessageIOO(MSG_SHOW_SOFT_INPUT, getImeShowFlags(), mCurMethod, resultReceiver))
+ -> handleMessage(msg)
+ -> InputMethodService.showSoftInput(int flags, ResultReceiver resultReceiver)
+ -> InputMethodService.showWindow(true)
+ -> showWindowInner(showInput)
+ -> SoftInputWindow.show()
+
+
+hideInputMethod:
+(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE).hideSoftInputFromWindow(IBinder windowToken, int flags)
+ -> InputMethodManager.hideSoftInputFromWindow(IBinder windowToken, int flags, ResultReceiver resultReceiver)
+ -> InputMethodManagerService.hideSoftInput(IInputMethodClient client, int flags, ResultReceiver resultReceiver)
+ -> InputMethodManagerService.hideCurrentInputLocked(int flags, ResultReceiver resultReceiver)
+ -> executeOrSendMessage(mCurMethod, mCaller.obtainMessageOO(MSG_HIDE_SOFT_INPUT, mCurMethod, resultReceiver));
+ -> handleMessage(msg)
+ -> InputMethodService.hideSoftInput(int flags, ResultReceiver resultReceiver)
+ -> doHideWindow()
+ -> hideWindow()
+ -> SoftInputWindow.hide();

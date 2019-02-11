@@ -1,0 +1,29 @@
+adb shell am start 
+     -d   data/uri
+     -a   action
+     -n   package/activity
+     -f   flags
+     -e   extras
+     -c   category
+
+adb shell am broadcast -a + action
+adb shell am startservice + class
+adb shell am kill + package
+adb shell am force-stop + package
+adb shell am kill-all 
+
+
+adb shell dumpsys activity
+
+adb shell dumpsys activity activities | sed -En -e '/Running activities/,/Run #0/p'
+
+要是adb remount失败，或者安装失败的话。输入adb disable-verity  然后adb reboot
+
+
+adb shell pm path <package> 显示apk路径
+adb shell pm clear <package> 清空用户数据
+
+
+adb shell dumpsys window windows | grep mCurrent     获得当前活动窗口的信息，包名以及活动窗体
+adb shell pm  path com.migu.lobby 包名管理命令，获得对应包名的对应apk路径
+

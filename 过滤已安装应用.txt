@@ -1,0 +1,34 @@
+ /**
+     * 对于n个热词，最好情况是没有已安装应用，每次循环直执行if分支，循环体执行n次
+     * 最坏情况，所有热词全部是已安装应用，每次执行else分支，但是else中的for循环体最多执行n次，内外循环体一共执行2n次，其他情况介于两者之间，故时间复杂度为O(n),空间复杂度为O(n)
+     * 循环体执行次数取决于第一个已安装应用出现的位置，假如出现在第m(0<=m<=n)位,则循环体执行2n-m次。
+     * @param hotWordsList
+     * @return
+     */
+    public List<HotWord> filterInstalledApp(List<HotWord> hotWordsList) {
+        List<HotWord> filterHotWordsList = new ArrayList<HotWord>();
+
+        int index = -1;
+        JSONArray filteredArray = new JSONArray();
+        for (int i = 0; i < hotWordsList.size(); i++) {
+            HotWord hotWords = hotWordsList.get(i);
+            if (!hotWords.isMarketScheme() || (i > index && !hotWords.isPackageInstalled(this.getContext()))) {
+                filterHotWordsList.add(hotWords);
+            } else {
+                if (hotWords.isPackageInstalled(this.getContext())) {
+                    filteredArray.put(hotWords.getAnalyticsJson());
+                }
+                for (index = index > i ? index + 1 : i + 1; index < hotWordsList.size(); index++) {
+                    HotWord hot = hotWordsList.get(index);
+                    if (hot.isMarketScheme() && !hot.isPackageInstalled(this.getContext())) {
+                        filterHotWordsList.add(hot);
+                        break;
+                    }
+                }
+            }
+        }
+        if (filteredArray.length() > 0) {
+            AnalyticalDataCollector.trackHotWordShow(filteredArray.toString(), "filtered");
+        }
+        return filterHotWordsList;
+    }

@@ -1,0 +1,26 @@
+adb shell monkey -p com.android.quicksearchbox -s 12345 --throttle 200 --pct-touch 35 --pct-motion 10 --pct-nav 20 --pct-majornav 15 --pct-appswitch 5 --pct-anyevent 5 --pct-trackball 0 --pct-syskeys 0 --ignore-crashes --ignore-timeouts --ignore-security-exceptions --bugreport -v 1000000
+解析：
+
+adb shell monkey 
+-p com.android.quicksearchbox 包名，可不设置，则测试所有包，可重复设置，测试多个包
+-s 12345 产生事件序列的随机数种子，种子相同，事件序列相同 -seed
+--throttle 200 时间间隔，毫秒
+--pct-touch 35 触摸事件的百分比，模拟点击
+--pct-motion 10 滑动事件百分比，模拟直线滑动
+--pct-nav 20 导航事件百分比，模拟按键事件，导航事件由方向输入设备的上下左右按键所触发的事件组成
+--pct-majornav 15 主要导航事件的百分比，这些导航事件通常会导致UI界面中的动作事件，如5-way键盘的中间键，回退按键、菜单按键
+--pct-appswitch 5 调整Activity启动的百分比。（在随机的时间间隔中，Monkey将执行一个startActivity()调用，作为最大程度覆盖被测包中全部Activity的一种方法）
+--pct-anyevent 5 调整其他事件的百分比。（这包含所有其他事件，如按键、其他在设备上不常用的按钮等）
+--pct-trackball 0 滑动事件百分比，模拟曲线滑动
+--pct-syskeys 0 调整系统事件百分比。（这些按键通常由系统保留使用，如Home、Back、Start Call、End Call、音量调节）
+--ignore-crashes 通常，应用发生崩溃或异常时Monkey会停止运行。如果设置此项，Monkey将继续发送事件给系统，直到事件计数完成。
+--ignore-timeouts 通常，应用程序发生任何超时错误（如“Application Not responding”对话框）Monkey将停止运行，设置此项，Monkey将继续发送事件给系统，直到事件计数完成。
+--ignore-security-exceptions 通常，当程序发生许可错误（例如启动一些需要许可的Activity）导致的异常时，Monkey将停止运行。设置此项，Monkey将继续发送事件给系统，直到事件计数完成。
+--bugreport 
+-v
+作用：命令行上的每一个-v都将增加反馈信息的详细级别。
+Level0（默认），除了启动、测试完成和最终结果外只提供较少的信息。
+Level1，提供了较为详细的测试信息，如逐个发送到Activity的事件信息。
+Level2，提供了更多的设置信息，如测试中选中或未选中的Activity信息。
+注：比较常用的是-v -v -v，即最多详细信息，一般会保存到指定文件中供开发人员查找bug原因时使用。
+1000000 事件计数

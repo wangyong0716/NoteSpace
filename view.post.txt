@@ -1,0 +1,131 @@
+    /**
+     * <p>Causes the Runnable to be added to the message queue.
+     * The runnable will be run on the user interface thread.</p>
+     *
+     * @param action The Runnable that will be executed.
+     *
+     * @return Returns true if the Runnable was successfully placed in to the
+     *         message queue.  Returns false on failure, usually because the
+     *         looper processing the message queue is exiting.
+     *
+     * @see #postDelayed
+     * @see #removeCallbacks
+     */
+    public boolean post(Runnable action) {
+        final AttachInfo attachInfo = mAttachInfo;
+        if (attachInfo != null) {
+            return attachInfo.mHandler.post(action);
+        }
+        // Assume that post will succeed later
+        ViewRootImpl.getRunQueue().post(action);
+        return true;
+    }
+
+user interface thread是指哪个线程？看attachInfo，唯一赋值的地方：
+    /**
+     * @param info the {@link android.view.View.AttachInfo} to associated with
+     *        this view
+     */
+    void dispatchAttachedToWindow(AttachInfo info, int visibility) {
+        //System.out.println("Attached! " + this);
+        mAttachInfo = info;
+        ....
+    }
+
+AttachInfo是view的内部类，有一个mHandler属性。但是，这个info是从那里传进来的？看ViewGroup中的该方法:
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void dispatchAttachedToWindow(AttachInfo info, int visibility) {
+        mGroupFlags |= FLAG_PREVENT_DISPATCH_ATTACHED_TO_WINDOW;
+        super.dispatchAttachedToWindow(info, visibility);
+        mGroupFlags &= ~FLAG_PREVENT_DISPATCH_ATTACHED_TO_WINDOW;
+
+        final int count = mChildrenCount;
+        final View[] children = mChildren;
+        for (int i = 0; i < count; i++) {
+            final View child = children[i];
+            child.dispatchAttachedToWindow(info,
+                    visibility | (child.mViewFlags & VISIBILITY_MASK));
+        }
+    }
+父view逐层传递到子view，最终调用的就是ViewRootImpl：
+host.dispatchAttachedToWindow(attachInfo, 0);
+而ViewRootImpl的这个属性:
+mAttachInfo = new View.AttachInfo(mWindowSession, mWindow, display, this, mHandler, this);
+这个mHandler是一个本地变量：
+ final ViewRootHandler mHandler = new ViewRootHandler();
+ViewRootHandler是ViewRootHandler的一个内部类，继承自Handler，没有重写构造方法，Handler的构造方法中：
+mLooper = Looper.myLooper();
+也就是最终runable的执行是在ViewRootHandler实例化的线程中，即ViewRootImpl实例化的线程。
+那么ViewRootImpl是在哪个线程中实例化的呢？看WindowManagerGlobal的addView方法：
+ root = new ViewRootImpl(view.getContext(), display);
+再找addView的调用，WindowManagerImpl.java中：
+49    private final WindowManagerGlobal mGlobal = WindowManagerGlobal.getInstance();
+
+82    @Override
+83    public void addView(@NonNull View view, @NonNull ViewGroup.LayoutParams params) {
+84        android.util.SeempLog.record_vg_layout(383,params);
+85        applyDefaultToken(params);
+86        mGlobal.addView(view, params, mDisplay, mParentWindow);
+87    }
+
+--->>>
+ActivityThread.java中的handleResumeActivity方法：
+      final void handleResumeActivity(IBinder token, boolean clearHide, boolean isForward,
+            boolean reallyResume) {
+        // If we are getting ready to gc after going to the background, well
+        // we are back active so skip it.
+        unscheduleGcIdler();
+
+        ActivityClientRecord r = performResumeActivity(token, clearHide);
+
+        if (r != null) {
+            final Activity a = r.activity;
+
+            if (localLOGV) Slog.v(
+                TAG, "Resume " + r + " started activity: " +
+                a.mStartedActivity + ", hideForNow: " + r.hideForNow
+                + ", finished: " + a.mFinished);
+
+            final int forwardBit = isForward ?
+                    WindowManager.LayoutParams.SOFT_INPUT_IS_FORWARD_NAVIGATION : 0;
+
+            // If the window hasn't yet been added to the window manager,
+            // and this guy didn't finish itself or start another activity,
+            // then go ahead and add the window.
+            boolean willBeVisible = !a.mStartedActivity;
+            if (!willBeVisible) {
+                try {
+                    willBeVisible = ActivityManagerNative.getDefault().willActivityBeVisible(
+                            a.getActivityToken());
+                } catch (RemoteException e) {
+                }
+            }
+            if (r.window == null && !a.mFinished && willBeVisible) {
+                r.window = r.activity.getWindow();
+                View decor = r.window.getDecorView();
+                decor.setVisibility(View.INVISIBLE);
+                ViewManager wm = a.getWindowManager();
+                WindowManager.LayoutParams l = r.window.getAttributes();
+                a.mDecor = decor;
+                l.type = WindowManager.LayoutParams.TYPE_BASE_APPLICATION;
+                l.softInputMode |= forwardBit;
+                if (a.mVisibleFromClient) {
+                    a.mWindowAdded = true;
+                    wm.addView(decor, l);
+                }
+             ...
+            }
+         ...
+         }
+      ...
+      }
+
+performResumeActivity -> r.activity.performResume() -> mInstrumentation.callActivityOnResume(this) -> activity.onResume()
+所以，ViewRootImpl是在主线程中实例化的，即view的handler也是属于主线程的。
+所以，view.post也是在主线程中执行的。
+
+
+

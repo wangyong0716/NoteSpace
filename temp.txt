@@ -1,0 +1,11 @@
+jdk:/usr/lib/jvm/java
+sdk:/usr/local/android-sdk-linux
+sudio:/opt/android-studio
+
+公司邮箱：
+用户名：wangyong5
+密码１：school number+@+school
+密码２：join time+@+company name 红点
+密码３：0415+@+company name 周边游
+密码４：join time+@+short name
+

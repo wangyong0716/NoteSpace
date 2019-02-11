@@ -1,0 +1,42 @@
+grep 同时满足多个关键字和满足任意关键字
+① grep -E "word1|word2|word3"   file.txt
+   满足任意条件（word1、word2和word3之一）将匹配。
+② grep word1 file.txt | grep word2 |grep word3
+   必须同时满足三个条件（word1、word2和word3）才匹配。
+　　　adb logcat | grep QSB.Analy | grep TRACK
+
+
+grep [OPTIONS] PATTERN [FILE...]
+grep [OPTIONS] [-e PATTERN]...  [-f FILE]...  [FILE...]
+
+OPTIONS:
+-e: 使用正则搜索
+-i: 不区分大小写
+-v: 查找不包含指定内容的行
+-w: 按单词搜索
+-c: 统计匹配到的次数
+-n: 显示行号
+-r: 逐层遍历目录查找
+-A: 显示匹配行及前面多少行, 如: -A3, 则表示显示匹配行及前3行
+-B: 显示匹配行及后面多少行, 如: -B3, 则表示显示匹配行及后3行
+-C: 显示匹配行前后多少行,   如: -C3, 则表示显示批量行前后3行
+ --color: 匹配到的内容高亮显示
+ --include: 指定匹配的文件类型
+ --exclude: 过滤不需要匹配的文件类型
+
+常用的命令：
+grep -rn word --include *.java --color
+
+grep -rn word --exclude *.java --color
+
+grep -rn word --exclude *.java --exclude merger.xml --color
+
+adb logcat | grep 'word1\|word2'
+
+adb logcat | grep word1 | grep word2
+
+
+指定某个目录不搜索：
+grep -Rn "Search for websites, " --exclude-dir=studioProject --color
+指定多个目录不搜索：
+grep -Rn "Search for websites, " --exclude-dir={studioProject,project} --color

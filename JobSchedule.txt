@@ -1,0 +1,4 @@
+1,JobScheduler所创建并执行的任务必须是带有条件限制的，不然是违背其初衷的，当你创建一个任务不做任何限制条件并且直接调用 scheduler.schedule(builder.build());去执行该任务是不可行的，会报以下的异常
+java.lang.IllegalArgumentException: You're trying to build a job with no constraints, this is not allowed.
+
+2,job service运行在你的主线程，这意味着你需要使用子线程，handler, 或者一个异步任务来运行耗时的操作以防止阻塞主线程。

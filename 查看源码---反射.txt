@@ -1,0 +1,39 @@
+系统源码中有很多log信息都添加了debug的控制变量来控制是否输出，这些变量通常都是false且无法直接修改，这是可以使用反射：
+例如，查看configChanges对activity是否重建的影响，可以通过修改android.app.ActivityThread的DEBUG_CONFIGURATION属性来查看相关log:
+
+    public void setSystemConfig() {
+        try {
+            Class<?> c = Class.forName("android.app.ActivityThread");
+            Field field = c.getDeclaredField("DEBUG_CONFIGURATION");
+            field.setAccessible(true);
+            field.setBoolean(c, true);
+            LogUtil.i("QQQ", "after set systemConfig = " + field.getBoolean(c));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getSystemConfig() {
+        try{
+            Class<?> at = Class.forName("android.app.ActivityThread");
+            Field config = at.getDeclaredField("DEBUG_CONFIGURATION");
+            config.setAccessible(true);
+            LogUtil.i("QQQ", "getSystemConfig = " + config.getBoolean(at));
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+配置configChanges后不会重启Activity，是因为ActivityThread里接收到了CONFIGURATION_CHANGED的消息，不配置重启是因为ActivityThread里接收到了RELAUNCH_ACTIVITY的消息。但是是谁发出的没找到。
+
+
+AMS, WMS, PMS这些类及相关类应该无法通过反射修改其变量，原因：
+1,system/framwork/framwork.jar不在默认的ClassLoader的查找路径下，且不能读取;
+2,这些是系统的服务，不属于当前进程，不应该修改，即使修改，不一定能生效。（待研究）
+
+
+关注静态导入，多个类同时静态导入，使用的还是同一变量吗？求证
+是的
+
+静态导入后反射修改属性可以吗？修改的是哪一个？
+静态导入后变量还是声明所在类的属性，不能通过<导入类.属性>方法访问,所以必须反射得到生命类的对象后才能修改其属性值。所有的静态导入应用的属性还是同一个属性。

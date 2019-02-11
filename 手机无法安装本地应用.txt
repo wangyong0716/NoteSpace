@@ -1,0 +1,15 @@
+利用adb shell进入系统，进入/data/app或者/data/data，删除跟你安装的apk同样的包名；
+
+按Ctrl+C退出系统，利用adb pull /data/system/packages.xml命令将packages.xml放到你PC机本地，然后找到你需要的包名，删除<package>到</package>的一段数据。例如：
+
+<package name="com.Android.wallpaper" codePath="/system/app/LiveWallpapers.apk" nativeLibraryPath="/data/data/com.android.wallpaper/lib" flags="1" ft="11b7e237e00" it="11b7e237e00" ut="11b7e237e00" version="10" userId="10012">
+<sigs count="1">
+<cert index="2" />
+</sigs>
+</package>
+
+保存packages.xml，然后adb push packages.xml /data/system将packages.xml文件送回设备中。
+
+然后再次adb install安装你的apk文件，看看是否success。
+
+如果还不能成功，还有一种可能性，就是你的安装包与之前设备上的安装包签名不一致，或者你的安装包根本就没有签名。这时候采用adb uninstall 包名卸载之前的安装包，再次adb install 安装你的apk文件。

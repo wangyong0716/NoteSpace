@@ -1,0 +1,5 @@
+重启文件管理器：
+ps -A | grep nautilus
+查看文件管理器pid，然后sudo kill + pid杀掉文件管理进程，重新打开即可。
+
+

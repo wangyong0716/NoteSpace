@@ -1,0 +1,46 @@
+https://www.jianshu.com/p/9deec36f2759
+https://github.com/square/okhttp/wiki/Interceptors
+
+
+在OkHttp3中，每一个请求任务都封装为一个Call，其实现为RealCall。
+而所有的策略几乎都可以通过OkHttpClient传入
+所有全局策略与数据，除了存储在允许上层访问的OkHttpClient实例以外，还有一部分是存储在只允许包可见的Internal.instance中（如连接池、路由黑名单等)
+OkHttp中用户可传入的interceptor分为两类，一类是全局interceptor，该类interceptor在请求开始之前最早被调用，另外一类为非网页请求的networkInterceptor，这类interceptor只有在非网页请求中会被调用，并且是在组装完成请求之后，真正发起请求之前被调用(这块具体可以参看RealCall#getResponseWithInterceptorChain()方法)
+整个请求过程通过RealInterceptorChain#proceed来连接，在每个interceptor中调用下一个interceptor来完成整个请求流程，并且在回到当前interceptor后完成响应处理
+在异步请求中，我们通过Callback来获得简单清晰的请求回调(onFailure、onResponse)
+在OkHttpClient中，我们可以传入EventListener的工厂方法，为每一个请求创建一个EventListener，来接收非常细的事件回调
+
+OkHttp 中的对所有的任务采用 NamedRunnable，约束每个执行单元给出对应的业务名称，以便于线程维护。
+
+
+拦截器：
+应用拦截器和网络拦截器的比较：
+应用拦截器：
+1,不需要担心中间过程的响应,如重定向和重试.
+2,总是只调用一次,即使HTTP响应是从缓存中获取.
+3,观察应用程序的初衷. 不关心OkHttp注入的头信息如: If-None-Match.
+4,允许短路而不调用 Chain.proceed(),即中止调用.
+5,允许重试,使 Chain.proceed()调用多次.
+在连接之前,socket连接服务器之前(没有调用OkHttpCore之前),http也是基于socket通讯,连接之前会走这个连接器
+
+网络拦截器：
+1,能够操作中间过程的响应,如重定向和重试.
+2,当网络短路而返回缓存响应时不被调用.
+3,只观察在网络上传输的数据.
+4,携带请求来访问连接.
+访问网络(调用OkHttpCore之后),执行的拦截
+
+
+
+在OkHttp3中，每一个请求任务都封装为一个Call，其实现为RealCall。
+而所有的策略几乎都可以通过OkHttpClient传入
+所有全局策略与数据，除了存储在允许上层访问的OkHttpClient实例以外，还有一部分是存储在只允许包可见的Internal.instance中（如连接池、路由黑名单等)
+OkHttp中用户可传入的interceptor分为两类，一类是全局interceptor，该类interceptor在请求开始之前最早被调用，另外一类为非网页请求的networkInterceptor，这类interceptor只有在非网页请求中会被调用，并且是在组装完成请求之后，真正发起请求之前被调用(这块具体可以参看RealCall#getResponseWithInterceptorChain()方法)
+整个请求过程通过RealInterceptorChain#proceed来连接，在每个interceptor中调用下一个interceptor来完成整个请求流程，并且在回到当前interceptor后完成响应处理
+在异步请求中，我们通过Callback来获得简单清晰的请求回调(onFailure、onResponse)
+在OkHttpClient中，我们可以传入EventListener的工厂方法，为每一个请求创建一个EventListener，来接收非常细的事件回调
+
+
+
+
+StreamAllocation, ConnectionPool， DiskLruCache

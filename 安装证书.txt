@@ -1,0 +1,4 @@
+adb root
+adb remount
+adb push c8750f0d.0 /etc/security/cacerts/
+adb shell chmod 644 /etc/security/cacerts/c8750f0d.0

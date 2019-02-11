@@ -1,0 +1,5 @@
+java底层内存原则：
+https://www.cnblogs.com/nexiyi/p/java_memory_model_and_thread.html
+
+
+

@@ -1,0 +1,10 @@
+staging:
+１，退出旧帐号；
+２，adb shell touch /data/system/xiaomi_account_preview && adb shell busybox killall com.xiaomi.account
+３，staging 登录
+"userId":4203782
+"password":"gohwg40643"​​
+
+
+切换帐号该怎么处理？
+http://wiki.n.miui.com/pages/viewpage.action?pageId=17471277

@@ -1,0 +1,19 @@
+1. 运行lsusb
+记住新加入的vid:pid
+
+2.不存在可以新建 /etc/udev/rules.d/51-Android.rules
+sudo vim /etc/udev/rules.d/51-Android.rules
+加入一行: 
+SUBSYSTEM=="usb", ATTR{idVendor}=="vid", ATTR{idProduct}=="pid", MODE="0666"
+
+3. 重启udev 
+sudo chmod a+rx /etc/udev/rules.d/51-android.rules
+sudo service udev restart
+
+4. 重启adb server
+（很重要）拔掉usb重新连上再执行：
+sudo adb kill-server
+adb devices
+
+
+

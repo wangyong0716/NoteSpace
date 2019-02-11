@@ -1,0 +1,12 @@
+ubuntu配置微信小程序开发环境：
+1，安装 Wine ：https://wiki.winehq.org/Ubuntu
+2, 安装开发者工具：https://github.com/cytle/wechat_web_devtools
+3, 2中安装wine如果出现无法定位，则https://blog.izgq.net/archives/1008/
+新建
+vim /usr/share/binfmts/wine
+内容填入：
+package wine
+interpreter /usr/bin/wine
+magic MZ
+更新：
+sudo update-binfmts --import wine

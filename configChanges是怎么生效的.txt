@@ -1,0 +1,72 @@
+cancro alpha:
+configChanges执行流程:
+ActivityManagerService.updateConfigurationLocked()
+ -> app.thread.scheduleConfigurationChanged(configCopy)
+ -> sendMessage:CONFIGURATION_CHANGED
+ -> handleConfigurationChanged(service, provider和没有执行onPause的activity,即当前activity)
+ -> collectComponentCallbacks,performConfigurationChanged 执行service,provider和没有pause的activity的onConfigurationChanged(config)方法。
+
+ActivityStack.ensureActivityConfigurationLocked()
+ -> r.app.thread.scheduleActivityConfigurationChanged(r.appToken, new Configuration(mOverrideConfig));
+ -> sendMessage:ACTIVITY_CONFIGURATION_CHANGED
+ -> handleActivityConfigurationChanged
+ -> performConfigurationChanged
+
+不配置configChanges执行流程，
+第一个流程一样。
+
+ActivityStack.ensureActivityConfigurationLocked()
+ -> relaunchActivityLocked （r.info.getRealConfigChanged()即配置的configChanges, 导致运行过程不同）
+ -> r.app.thread.scheduleRelaunchActivity(r.appToken, results, newIntents, changes,!andResume, new Configuration(mService.mConfiguration),new Configuration(mOverrideConfig));
+ -> requestRelaunchActivity
+ -> sendMessage:RELAUNCH_ACTIVITY
+ -> handleRelaunchActivity(r)
+ -> handleDestroyActivity(r.token, false, configChanges, true),handleLaunchActivity(r, currentIntent, "handleRelaunchActivity");
+
+ 导致不一样的判断：if ((changes&(~r.info.getRealConfigChanged())) != 0 || r.forceNewConfig) {}
+change表示窗口变化的config,r.info.getRealConfigChanged()表示配置的configChanges,当changes对应的变化位包含在r.info.getRealConfigChanged()中，这个逻辑运算结果为0,不会进入if分支，直接运行到最后执行scheduleActivityConfigurationChanged,否则，进入if分支，该分支执行完后就会return。最终activity的configurationChanged方法就不会被调用。
+
+latte v6-dev:
+添加了configChanges后ActivityStack.ensureActivityConfigurationLocked()执行流程不一样，cancro上面添加了对屏幕当前窗口的方向，高度，最小宽度的比较，如果发生了变化，也会通知activity执行onConfigurationChanged方法,latte则不会。
+latte:
+3724        final int changes = oldConfig.diff(newConfig);
+3725        if (changes == 0 && !r.forceNewConfig) {
+3726            if (DEBUG_SWITCH || DEBUG_CONFIGURATION) Slog.v(TAG,
+3727                    "Configuration no differences in " + r);
+3728            return true;
+3729        }
+只判断了activity的configuration有没有变化，没有就返回。在切换到横向布局的应用时，activity的configuration并没有发生改变。所以函数退出
+changes = 0;
+
+cancro:
+4180        int stackChanges = oldStackOverride.diff(mOverrideConfig);
+4181        if (stackChanges == 0) {
+4182            // {@link Configuration#diff} doesn't catch changes from unset values.
+4183            // Check for changes we care about.
+4184            if (oldStackOverride.orientation != mOverrideConfig.orientation) {
+4185                stackChanges |= ActivityInfo.CONFIG_ORIENTATION;
+4186            }
+4187            if (oldStackOverride.screenHeightDp != mOverrideConfig.screenHeightDp
+4188                    || oldStackOverride.screenWidthDp != mOverrideConfig.screenWidthDp) {
+4189                stackChanges |= ActivityInfo.CONFIG_SCREEN_SIZE;
+4190            }
+4191            if (oldStackOverride.smallestScreenWidthDp != mOverrideConfig.smallestScreenWidthDp) {
+4192                stackChanges |= ActivityInfo.CONFIG_SMALLEST_SCREEN_SIZE;
+4193            }
+4194        }
+4195        final int changes = oldConfig.diff(newConfig) | stackChanges;
+4196        if (changes == 0 && !r.forceNewConfig) {
+4197            if (DEBUG_SWITCH || DEBUG_CONFIGURATION) Slog.v(TAG_CONFIGURATION,
+4198                    "Configuration no differences in " + r);
+4199            return true;
+4200        }
+不仅判断了activity的configuration,还判断了当前stack的configuration，在切换到横向布局的activity时，stack的configuration发生了变化，所以changes!=0,函数可以继续执行。所以，如果都配置了configChanges属性，cancro上面会执行activity的configurationChanged方法，但是latte不会。
+
+不添加configChanges的时候changes!=0,执行了if分支。最终执行了relaunchActivityLocked(也不是一定执行，为什么？)。
+为什么两次changes不一样？
+
+
+ActivityRecord:
+ boolean forceNewConfig; // force re-create with new config next time
+
+

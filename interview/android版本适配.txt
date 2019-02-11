@@ -1,0 +1,6 @@
+1,Android6.0（API23）开始需要动态申请权限，需要手动申请的权限有8组（短信、电话、联系人、存储、位置、麦克风、日历、相机）
+2,Android7.0对文件权限进一步升级，提出了新的类FileProvider来获取文件。所以适配的时候一定要注意这一点api的变化。
+3,Android 8.0适配报错：Only fullscreen opaque activities can request orientation解决方案
+4,android 8.0安装未知应用权限，没有申请安装权限的应用无法安装应用，apk下载完成后不会自动打开下载页面。
+5,android 7,8 处于耗电考虑，增加了对静态隐式广播接受的限制
+6,AndroidP上，org.apache.http.legacy已从系统boot class path中移除，导致SystemClassLoader无法在原有路径上找到apache相关类，报NoClassDefFoundError错误。

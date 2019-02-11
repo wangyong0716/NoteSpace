@@ -1,0 +1,66 @@
+https://blog.csdn.net/tuke_tuke/article/details/73379123
+
+layout文件中如果是match_parent和固定值，就可以用系统的onMeasure，如果设置的是wrap_content，就需要重写onMeasure，根据需要计算出宽和高，用setMeasureDemension设置进去。对自定义View和自定义ViewGroup都适用。
+
+
+
+forceLayout:
+Forces this view to be laid out during the next layout pass. This method does not call requestLayout() or forceLayout() on the parent.
+只是强制view在下一次layout的过程中被布局，并不会调用父view的requestLayout()和forceLayout()方法。
+{
+	mPrivateFlags |= PFLAG_FORCE_LAYOUT;
+        mPrivateFlags |= PFLAG_INVALIDATED;
+}
+
+requestLayout:
+Call this when something has changed which has invalidated the layout of this view. This will schedule a layout pass of the view tree. This should not be called while the view hierarchy is currently in a layout pass ({@link #isInLayout()}. If layout is happening, the request may be honored at the end of the current layout pass (and then layout will run again) or after the current frame is drawn and the next layout occurs.
+Subclasses which override this method should call the superclass method to handle possible request-during-layout errors correctly.</p>
+当当前布局无效后，需要调用此方法。该方法会引起布局树执行一次布局流程。当当前的布局层次正在进行布局时，这个方法不应该被调用。如果正在布局，这次请求可能在布局完成后重新布局一次，或者再当前的frame被绘制完成时执行一边布局流程。（也就是说，当前正在布局，则不应该调用，否则，可能会重复执行一次布局流程）
+子类重写此方法时，应该调用父类的方法处理一些布局异常。
+{
+
+        mPrivateFlags |= PFLAG_FORCE_LAYOUT;
+        mPrivateFlags |= PFLAG_INVALIDATED;
+
+        if (mParent != null && !mParent.isLayoutRequested()) {
+            mParent.requestLayout();
+        }
+}
+
+
+invalidate:
+Invalidate the whole view. If the view is visible, {@link #onDraw(android.graphics.Canvas)} will be called at some point in the future.
+This must be called from a UI thread. To call from a non-UI thread, call {@link #postInvalidate()}.
+废除当前整个view，如果view可见，onDraw方法将会被调用。
+这个方法必须被UI线程调用，非UI线程可以调用postInvalidate()。
+{
+        invalidate(true);
+}
+
+
+measure() {
+
+	final boolean forceLayout = (mPrivateFlags & PFLAG_FORCE_LAYOUT) == PFLAG_FORCE_LAYOUT;
+
+	if (forceLayout || needsLayout) {
+
+		mPrivateFlags |= PFLAG_LAYOUT_REQUIRED;
+
+	}
+
+}
+
+layout() {
+
+	if (changed || (mPrivateFlags & PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) {
+            onLayout(changed, l, t, r, b);
+
+	}
+}
+
+
+
+
+
+
+

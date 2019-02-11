@@ -1,0 +1,190 @@
+https://blog.csdn.net/wushiwude/article/details/76041751
+
+
+List:
+LinkedList与ArrayList
+1、相同之处
+a）都直接或者间接继承了AbstractList、都支持以索引的方式操作元素
+b）都不必担心容量问题、ArrayList是通过动态数组来保存数据的、当容量不足时、数组会自动扩容、而LinkedList是以双向链表来保存数据的、不存在容量不足的问题
+c） 都是线程不安全的、一般用于单线程的环境下、要想在并发的环境下使用可以使用Collections工具类包装。
+
+2、不同之处
+a）ArrayList是通过动态数组来保存数据的、而LinkedList是以双向链表来保存数据的
+b）相对与ArrayList而言、LinkedList实现了Deque接口、Deque继承了Queue接口、同时LinkedList继承了AbstractSequencedList类、使得LinkedList在保留使用索引操作元素的功能的同时、也实现了双向链表所具有的功能、这就决定了LinkedList的特定
+c）对集合中元素进行不同的操作效率不同、LinkedList善于删除、添加元素、ArrayList善于查找元素。本质就是不同数据结构之间差异。
+
+
+
+ArrayList与Vector
+1、相同之处：
+a）都是继承AbstractList、拥有相同的方法的定义、
+b）内部都是以动态数组来存储、操作元素的、并且都可以自动扩容。
+2、不同之处：
+a）线程安全：ArrayList是线程不安全的、适用于单线程的环境下、Vector是线程安全的、使用与多线程的环境下。
+b）构造方法：Vector有四个构造方法、比ArrayList多一个可以指定每次扩容多少的构造方法
+c）扩容问题：每当动态数组元素达到上线时、ArrayList扩容为：“新的容量”=“(原始容量x3)/2 + 1”、 而Vector的容量增长与“增长系数有关”，若指定了“增长系数”，且“增长系数有效(即，大于0)”；那么，每次容量不足时，“新的容量”=“原始容量+增长系数”。若增长系数无效(即，小于/等于0)，则“新的容量”=“原始容量 x 2”。
+d）效率问题：因为Vector要同步方法、这个是要消耗资源的、所以效率会比较低下
+e）Vector为摆脱fail-fast机制、自己内部多提供了一种迭代方法Enumeration、
+
+
+Vector：继承AbstractList、以动态数组的形式存储、操作元素、线程安全
+Stack：继承Vector、在Vector的基础上新增以栈的形式存储、操作元素。
+
+Set
+用于存储无序(存入和取出的顺序不一定相同)元素，值不能重复。
+https://blog.csdn.net/qq_33642117/article/details/52040345
+
+HashSet
+底层其实是HashMap实现的。
+哈希表边存放的是哈希值。HashSet存储元素的顺序并不是按照存入时的顺序（和List显然不同） 是按照哈希值来存的所以取数据也是按照哈希值取得。
+HashSet不存入重复元素的规则.使用hashcode和equals
+由于Set集合是不能存入重复元素的集合。那么HashSet也是具备这一特性的。HashSet如何检查重复？HashSet会通过元素的hashcode（）和equals方法进行判断元素师否重复。
+当你试图把对象加入HashSet时，HashSet会使用对象的hashCode来判断对象加入的位置。同时也会与其他已经加入的对象的hashCode进行比较，如果没有相等的hashCode，HashSet就会假设对象没有重复出现。
+简单一句话，如果对象的hashCode值是不同的，那么HashSet会认为对象是不可能相等的。
+因此我们自定义类的时候需要重写hashCode，来确保对象具有相同的hashCode值。
+如果元素(对象)的hashCode值相同,是不是就无法存入HashSet中了? 当然不是,会继续使用equals 进行比较.如果 equals为true 那么HashSet认为新加入的对象重复了,所以加入失败。如果equals 为false那么HashSet 认为新加入的对象没有重复.新元素可以存入.
+总结：
+元素的哈希值是通过元素的hashcode方法 来获取的, HashSet首先判断两个元素的哈希值，如果哈希值一样，接着会比较equals方法 如果 equls结果为true ，HashSet就视为同一个元素。如果equals 为false就不是同一个元素。
+哈希值相同equals为false的元素是怎么存储呢,就是在同样的哈希值下顺延（可以认为哈希值相同的元素放在一个哈希桶中）。也就是哈希一样的存一列。
+
+
+TreeSet
+TreeSet可以自然排序。
+排序规则：
+1:让存入的元素自定义比较规则。
+2:给TreeSet指定排序规则。
+方式一：元素自身具备比较性
+元素自身具备比较性，需要元素实现Comparable接口，重写compareTo方法，也就是让元素自身具备比较性，这种方式叫做元素的自然排序也叫做默认排序。
+方式二：容器具备比较性
+当元素自身不具备比较性，或者自身具备的比较性不是所需要的。那么此时可以让容器自身具备。需要定义一个类实现接口Comparator，重写compare方法，并将该接口的子类实例对象作为参数传递给TreeMap集合的构造方法。
+注意：当Comparable比较方式和Comparator比较方式同时存在时，以Comparator的比较方式为主；
+注意：在重写compareTo或者compare方法时，必须要明确比较的主要条件相等时要比较次要条件。（假设姓名和年龄一直的人为相同的人，如果想要对人按照年龄的大小来排序，如果年龄相同的人，需要如何处理？不能直接return 0，因为可能姓名不同（年龄相同姓名不同的人是不同的人）。此时就需要进行次要条件判断（需要判断姓名），只有姓名和年龄同时相等的才可以返回0.）
+
+LinkedHashSet:
+会保存插入的顺序。
+
+
+
+Map 
+集合类用于存储元素对（称作“键”和“值”），其中每个键映射到一个值。
+
+HashMap
+最常用的Map,它根据键的HashCode 值存储数据,根据键可以直接获取它的值，具有很快的访问速度。HashMap最多只允许一条记录的键为Null(多条会覆盖);允许多条记录的值为 Null。非同步的。
+HashMap 的数据结构
+在 Java 编程语言中，最基本的结构就是两种，一个是数组，另外一个是指针（引用），HashMap 就是通过这两个数据结构进行实现。HashMap实际上是一个“链表散列”的数据结构，即数组和链表的结合体。
+HashMap 底层就是一个数组结构，数组中的每一项又是一个链表。当新建一个 HashMap 的时候，就会初始化一个数组。
+源码级详解：
+https://blog.csdn.net/wushiwude/article/details/76041751
+Fail-Fast 机制
+原理 java.util.HashMap 不是线程安全的，因此如果在使用迭代器的过程中有其他线程修改了 map，那么将抛出 ConcurrentModificationException，这就是所谓 fail-fast 策略。
+fail-fast 机制是 java 集合(Collection)中的一种错误机制。 当多个线程对同一个集合的内容进行操作时，就可能会产生 fail-fast 事件。
+
+四种遍历方式：
+1,增强for循环：keySet()
+for (String key : map.keySet()) {
+    System.out.println(key + " ：" + map.get(key));
+}
+2,增强for循环：entrySet()
+for (Map.Entry<String, String> entry : map.entrySet()) {
+    System.out.println(entry.getKey() + " ：" + entry.getValue());
+}
+3,迭代:keySet()
+Iterator<String> iterator = map.keySet().iterator();
+while (iterator.hasNext()) {
+    String key = iterator.next();
+    System.out.println(key + "　：" + map.get(key));
+}
+4,迭代：entrySet() ----->  效率最高，推荐使用
+Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+while (iterator.hasNext()) {
+    Map.Entry<String, String> entry = iterator.next();
+    System.out.println(entry.getKey() + "　：" + entry.getValue());
+}
+比较：
+1,增强for循环使用方便，但性能较差，不适合处理超大量级的数据。
+2,迭代器的遍历速度要比增强for循环快很多，是增强for循环的2倍左右。
+3,使用entrySet遍历的速度要比keySet快很多，是keySet的1.5倍左右。
+
+
+TreeMap
+能够把它保存的记录根据键(key)排序,默认是按升序排序，也可以指定排序的比较器，当用Iterator 遍历TreeMap时，得到的记录是排过序的。TreeMap不允许key的值为null。非同步的。 
+
+Hashtable
+与 HashMap类似,不同的是:key和value的值均不允许为null;它支持线程的同步，即任一时刻只有一个线程能写Hashtable,因此也导致了Hashtale在写入时会比较慢。
+Hashtable 遍历方式
+1、使用keys()
+    Enumeration<String> en1 = table.keys();
+        while(en1.hasMoreElements()) {
+        en1.nextElement();
+    }
+2、使用elements()
+    Enumeration<String> en2 = table.elements();
+        while(en2.hasMoreElements()) {
+        en2.nextElement();
+    }
+3、使用keySet()
+    Iterator<String> it1 = table.keySet().iterator();
+        while(it1.hasNext()) {
+        it1.next();
+    }
+4、使用entrySet()
+    Iterator<Entry<String, String>> it2 = table.entrySet().iterator();
+        while(it2.hasNext()) {
+        it2.next();
+    }
+Hashtable 与 HashMap 的简单比较
+    HashTable 基于 Dictionary 类，而 HashMap 是基于 AbstractMap。Dictionary 是任何可将键映射到相应值的类的抽象父类，而 AbstractMap 是基于 Map 接口的实现，它以最大限度地减少实现此接口所需的工作。
+    HashMap 的 key 和 value 都允许为 null，而 Hashtable 的 key 和 value 都不允许为 null。HashMap 遇到 key 为 null 的时候，调用 putForNullKey 方法进行处理，而对 value 没有处理；Hashtable遇到 null，直接返回 NullPointerException。
+    Hashtable 方法是同步，而HashMap则不是。我们可以看一下源码，Hashtable 中的几乎所有的 public 的方法都是 synchronized 的，而有些方法也是在内部通过 synchronized 代码块来实现。所以有人一般都建议如果是涉及到多线程同步时采用 HashTable，没有涉及就采用 HashMap，但是在 Collections 类中存在一个静态方法：synchronizedMap()，该方法创建了一个线程安全的 Map 对象，并把它作为一个封装的对象来返回
+ 
+LinkedHashMap
+保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的.在遍历的时候会比HashMap慢。key和value均允许为空，非同步的。 
+LinkedHashMap 是 HashMap 的一个子类，它保留插入的顺序，如果需要输出的顺序和输入时的相同，那么就选用 LinkedHashMap。
+LinkedHashMap 是 Map 接口的哈希表和链接列表实现，具有可预知的迭代顺序。此实现提供所有可选的映射操作，并允许使用 null 值和 null 键。此类不保证映射的顺序，特别是它不保证该顺序恒久不变。
+LinkedHashMap 实现与 HashMap 的不同之处在于，LinkedHashMap 维护着一个运行于所有条目的双重链接列表。此链接列表定义了迭代顺序，该迭代顺序可以是插入顺序或者是访问顺序。
+注意，此实现不是同步的。如果多个线程同时访问链接的哈希映射，而其中至少一个线程从结构上修改了该映射，则它必须保持外部同步。
+根据链表中元素的顺序可以分为：按插入顺序的链表，和按访问顺序(调用 get 方法)的链表。默认是按插入顺序排序，如果指定按访问顺序排序，那么调用get方法后，会将这次访问的元素移至链表尾部，不断访问可以形成按访问顺序排序的链表。
+
+
+
+看到array，就要想到角标。
+看到link，就要想到first，last。
+看到hash，就要想到hashCode,equals.
+看到tree，就要想到两个接口。Comparable，Comparator。
+
+
+
+
+android提供的两种数据结构：
+SparseArray -> LongSparseArray
+分别通过int[]数组和value数组来保存<key, value>，实现的是Cloneable接口。
+put(key,value)  二分查找key对应的mKeys数组应该插入的下标，找到即插入，否则返回应该插入的位置，如果values数组上该位置有元素（已删除），则直接保存，否则插入新元素和新key，如果数组空间不够，则2倍的方式扩展;
+append(key,value)  如果添加的元素应该处于数组中间位置，则调用put，否则，直接在尾部添加元素，这种情况下，减少了二分查找插入位置的过程，而且insert的时候一定会把旧数组copy到新数组，但是这种情况下，数组长度够的时候直接尾部添加，不会copy。是put在顺序添加的情况下的优化。
+gc() 删除元素的时候并不直接从数组中移除，而是添加标记，而是在处理index，size等相关的函数中执行gc()，将已删除元素的位置重新放上有效数组。
+
+
+SparseArray比HashMap更省内存，在某些条件下性能更好，主要是由于它避免了对key的自己主动装箱（int转为Integer类型），它内部则是通过两个数组来进行数据存储的。一个存储key，另外一个存储value，为了优化性能，它内部对数据还採取了压缩的方式来表示稀疏数组的数据，从而节约内存空间。
+
+在获取数据的时候，也是使用二分查找法推断元素的位置，hashmap通过hash散列算法推断元素位置，所以，数据量少的时候，二分查找比hash散列算法省时，性能更高。数据大的时候则会比较满。
+
+数据量大的情况下性能并不明显，将减少至少50%。
+满足下面两个条件我们能够使用SparseArray取代HashMap：
+数据量不大，最好在千级以内
+key必须为int类型，这中情况下的HashMap能够用SparseArray取代。
+
+ArrayMap
+实现的是map的接口
+ArrayMap是一个<key,value>映射的数据结构，它设计上很多其他的是考虑内存的优化，内部是使用两个数组进行数据存储，一个数组记录key的hash值。另外一个数组记录Value值。它和SparseArray一样。也会对key使用二分法进行从小到大排序，在加入、删除、查找数据的时候都是先使用二分查找法得到相应的index，然后通过index来进行加入、查找、删除等操作，所以，应用场景和SparseArray的一样，假设在数据量比較大的情况下，那么它的性能将退化至少50%。
+
+应用场景：
+数据量不大，最好在千级以内
+数据结构类型为Map类型
+
+
+SparseArray和ArrayMap都差点儿相同，使用哪个呢？
+假设数据量都在千级以内的情况下：
+1、假设key的类型已经确定为int类型。那么使用SparseArray，由于它避免了自己主动装箱的过程，假设key为long类型，它还提供了一个LongSparseArray来确保key为long类型时的使用
+2、假设key类型为其他的类型，则使用ArrayMap
+
+
+

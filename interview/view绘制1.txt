@@ -1,0 +1,42 @@
+Window
+Window即窗口，这个概念在Android Framework中的实现为android.view.Window这个抽象类，这个抽象类是对Android系统中的窗口的抽象。
+
+实际上，窗口是一个宏观的思想，它是屏幕上用于绘制各种UI元素及响应用户输入事件的一个矩形区域。通常具备以下两个特点：
+独立绘制，不与其它界面相互影响；
+不会触发其它界面的输入事件；
+
+在Android系统中，窗口是独占一个Surface实例的显示区域，每个窗口的Surface由WindowManagerService分配。我们可以把Surface看作一块画布，应用可以通过Canvas或OpenGL在其上面作画。画好之后，通过SurfaceFlinger将多块Surface按照特定的顺序（即Z-order）进行混合，而后输出到FrameBuffer中，这样用户界面就得以显示。
+
+android.view.Window这个抽象类可以看做Android中对窗口这一宏观概念所做的约定，而PhoneWindow这个类是Framework为我们提供的Android窗口概念的具体实现。接下来我们先来介绍一下android.view.Window这个抽象类。
+这个抽象类包含了三个核心组件：
+
+WindowManager.LayoutParams: 窗口的布局参数；
+Callback: 窗口的回调接口，通常由Activity实现；
+ViewTree: 窗口所承载的控件树。
+
+
+PhoneWindow这个类是Framework为我们提供的Android窗口的具体实现。我们平时调用setContentView()方法设置Activity的用户界面时，实际上就完成了对所关联的PhoneWindow的ViewTree的设置。我们还可以通过Activity类的requestWindowFeature()方法来定制Activity关联PhoneWindow的外观，这个方法实际上做的是把我们所请求的窗口外观特性存储到了PhoneWindow的mFeatures成员中，在窗口绘制阶段生成外观模板时，会根据mFeatures的值绘制特定外观。
+
+DecorView是一个应用窗口的根容器，它本质上是一个FrameLayout。DecorView有唯一一个子View，它是一个垂直LinearLayout，包含两个子元素，一个是TitleView（ActionBar的容器），另一个是ContentView（窗口内容的容器）。关于ContentView，它是一个FrameLayout（android.R.id.content)，我们平常用的setContentView就是设置它的子View。上图还表达了每个Activity都与一个Window（具体来说是PhoneWindow）相关联，用户界面则由Window所承载。
+
+
+setContentView(int layoutResId): Set the activity content from a layout resource.  The resource will be inflated, adding all top-level views to the activity.
+调用PhoneWindow.setContentView(layoutResId):
+1,DecorView的对象mDecor是否为空，为空则创建，本身是一个FrameLayout;
+2,mContentParent是否为空，该view是用于显示参数layoutResId的父view，本身是一个FrameLayout。如果为空，会先读取window的一些feature属性，根据读取的feature选择相应的布局文件进行渲染，这个布局文件根View是一个LinearLayout/FrameLayout，赋值给mContentRoot，该布局文件中有一个id为android:id/content的FrameLayout，即mContentParent,就是contentView，还有一个id为android:id/title_container的RelativieLayout，即TitleView，添加mContentRoot为nDecor的子view;
+3,以mContentParent为父view渲染layoutResId对应的布局文件。
+4,调用inflate渲染xml中的所有控件。
+
+总结：
+一个activity对应一个window，实际上是PhoneWindow的一个实例，DectorView是其一个属性，是一个FrameLayout，DectorView也只有一个子view，该子View的布局由window的Feature决定，通常是一个LinearLayout，其至少包含两个子View，TiTleView和ContentLayout。
+
+
+问题：
+PhoneWindow创建的时间点;
+ViewRoot绑定时机;
+
+
+
+
+
+
