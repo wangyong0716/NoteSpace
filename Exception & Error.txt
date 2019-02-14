@@ -1,0 +1,32 @@
+Java语言要求java程序中所有抛出（throw）的异常都必须是从Throwable派生而来。对于java程序员而言，它一般只需要在它的顶级函数中catch(Exception ex)就可以捕获出所有的异常对象。
+所有异常对象的根基类是 Throwable ，Throwable从Object直接继承而来（这是java系统所强制要求的），并且它实现了 Serializable接口（这为所有的异常对象都能够轻松跨越Java组件系统做好了最充分的物质准备）。
+从Throwable直接派生出的异常类有Exception和Error 。
+ Exception 和从它派生而来的所有异常都是应用程序能够catch到的，并且可以进行异常错误恢复处理的异常类型。
+而Error则表示Java系统中出现了一个非常严重的异常错误，并且这个错误可能是应用程序所不能恢复的。
+
+
+RuntimeException 表示这种异常是否出现经常不可预料，出现了的话，就中止处理。
+Error 一般表示无法恢复的故障，也就是你再试一次依然会出错，比如 OutOfMemoryError，试多少次很大概率出错的。
+Exception 则表示一般性的异常，而且这种异常是设计中早已考虑到很常见的错误，并且一定要求在设计中说明如果处理这种异常。
+
+
+Error类和Exception类的父类都是throwable类，他们的区别是：
+Error类一般是指与虚拟机相关的问题，如系统崩溃，虚拟机错误，内存空间不足，方法调用栈溢等。对于这类错误的导致的应用程序中断，仅靠程序本身无法恢复和和预防，遇到这样的错误，建议让程序终止。
+Exception类表示程序可以处理的异常，可以捕获且可能恢复。遇到这类异常，应该尽可能处理异常，使程序恢复运行，而不应该随意终止异常。
+Exception类又分为运行时异常（Runtime Exception）和受检查的异常(Checked Exception )，运行时异常;ArithmaticException,IllegalArgumentException，编译能通过，但是一运行就终止了，程序不会处理运行时异常，出现这类异常，程序会终止。而受检查的异常，要么用try。。。catch捕获，要么用throws字句声明抛出，交给它的父类处理，否则编译不会通过。
+
+
+
+
+
+
+总结：
+Exception和Error都是Throwable的子类。
+
+Exception分为Runtime Exception和Checked Exception。其中Runtime Exception直接继承自RuntimeException（Exception的子类），顾名思义，运行时才出现的异常，及编译器无法检测出来，或者说，是编译器没想到的异常，从程序角度讲，这些异常出乎意料，本不应该出现，应该停止运行，我们在写代码的时候应该通过代码逻辑规避这些异常。但实际上，我们的程序中很多地方都catch了这些异常。例如，数组越界异常，类型转换异常等，可以不用catch或throw程序也能编译通过。
+Checked Exception是Exception的子类但不是RuntimeException的子类的异常，编译器可以检测出来，我们需要throw或者catch才能编译通过，比如IOException，JsonException，SQLiteException，NoSuchMethodException等，程序的角度来看，这些错误可能出现，需要通过异常处理来使程序恢复正常。
+
+Error通常表示虚拟机层面的异常，当前程序无法解决，出现了应该立刻终止运行。比如熟知的的StackOverflowError，OutOfMemoryError，IOError。
+
+那么，Error能不能通过try-catch来使程序继续运行呢？
+可以捕获，try-catch的括号里只要是Throwable就可以了，所以可以像exception那样捕获。但是能否让程序继续运行，这个可能就得看场景了，比如栈溢出，即使当前的异常被catch住了，但是虚拟机层面的问题仍然无法解决，接下来可能会继续出现。这样继续执行也没有意义，所以，捕获Error通常都是不合理的。

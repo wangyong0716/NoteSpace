@@ -1,0 +1,3 @@
+android studio快捷键：
+1,查看类结构：Alt + 7;
+2,查看类继承关系：Alt + h;
