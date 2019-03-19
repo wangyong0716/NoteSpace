@@ -5,6 +5,7 @@ git log --since="Fri Aug 10 19:16:10 2012 +0800"
 或者用--until 查看某个时间点以前的log
 
 git log --before="Fri Aug 10 19:16:10 2012 +0800" 
+git log --before 2019-01-01
 
 获取某个时间点以后的commit，-n 1 表示只返回一个，最近的一个
 
