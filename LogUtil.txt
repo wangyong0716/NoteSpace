@@ -1,0 +1,62 @@
+import android.content.Context;
+import android.util.Log;
+
+import java.util.Map;
+
+/**
+ * log输出
+ */
+public class LogUtil {
+    private static final boolean ENABLE = BuildConfig.DEBUG;
+
+    public static void i(String tag, String msg) {
+        if (ENABLE) {
+            Log.i(tag, msg);
+        }
+    }
+
+    public static void e(String tag, String msg) {
+        if (ENABLE) {
+            Log.e(tag, msg);
+        }
+    }
+
+    public static void d(String tag, String msg) {
+        if (ENABLE) {
+            Log.d(tag, msg);
+        }
+    }
+
+    /**
+     * 打印调用栈
+     * @param tag
+     * @param throwable
+     */
+    private void logStackTrace(String tag, Throwable throwable) {
+        if (ENABLE) {
+            Log.w(tag, "---------> message = " + throwable.getMessage());
+            StackTraceElement[] trace = throwable.getStackTrace();
+            for (int i = 0; i < trace.length; i++) {
+                Log.w(tag, trace[i].toString());
+            }
+            Log.w(tag, "<--------- end");
+        }
+    }
+
+    /**
+     * 打印preference的键值对
+     * @param context
+     * @param tag
+     * @param preferenceName
+     */
+    private void logPreference(Context context, String tag, String preferenceName) {
+        if (ENABLE) {
+            Log.i(tag, "---------> preferenceName = " + preferenceName);
+            Map<String, ?> entrys = context.getSharedPreferences(preferenceName, 0).getAll();
+            for (String key : entrys.keySet()) {
+                Log.i(tag, "key = " + key + ", value = " + entrys.get(key));
+            }
+            Log.i(tag, "<--------- end " + preferenceName);
+        }
+    }
+}
