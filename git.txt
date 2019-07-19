@@ -63,3 +63,6 @@ git push origin :remote_branch
 
 merge远程分支：
 git merge origin/develop
+
+设置远程跟踪
+git branch --set-upstream-to=origin/<remote-branch> <local-branch>
