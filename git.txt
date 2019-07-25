@@ -66,3 +66,11 @@ git merge origin/develop
 
 设置远程跟踪
 git branch --set-upstream-to=origin/<remote-branch> <local-branch>
+
+
+Git tag:
+查看tag：git tag
+拉取tag：git fetch --tags
+根据tag创建分支：git branch <branch> <tag>
+
+
