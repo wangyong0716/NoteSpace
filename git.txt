@@ -73,4 +73,11 @@ Git tag:
 拉取tag：git fetch --tags
 根据tag创建分支：git branch <branch> <tag>
 
+创建本地tag：
+git tag -a <tag-name> -m “<tag-commit>”
+查看tag：
+git show <tag-name>
+将tag推送到远端：
+git push origin <tag-name>
+
 
