@@ -47,6 +47,13 @@ https://blog.csdn.net/yaomingyang/article/details/80981004
 
 资料
 https://github.com/justjavac/free-programming-books-zh_CN#web
+好文章：
+1，消息机制详解：
+https://blog.csdn.net/codeemperor/article/details/50931107
+https://www.jianshu.com/p/abe16122aa05
+
+2，很多干货：
+https://blog.csdn.net/windskier
 
 android：
 https://mp.weixin.qq.com/s/o8kJkTA5gzBnWc6sQVK4Mg
