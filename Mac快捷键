@@ -1,0 +1,63 @@
+复制/粘贴：Command + c/v
+
+切换窗口：Command + tab
+
+显示桌面：Command + f3
+
+新建terminal：Command + space,输入terminal，回车，打开一个terminal
+新建一个terminal：在当前terminal可操作的情况下，Command + n
+
+关闭当前窗口：Command + W关闭当前窗口； Command + Q退出=当前程序
+
+最小化当前窗口：Command + m
+
+全屏/退出全屏:Ctrl + Command + f
+
+相同应用多个窗口切换：Command + ~
+
+睡眠：Option–Command–电源按钮*
+
+在Mac系统中几个键位组合可以使Terminal的操作更加灵活方便。
+
+1、将光标移动到行首：ctrl + a
+
+2、将光标移动到行尾：ctrl + e
+
+3、清除屏幕：            ctrl + l
+
+4、搜索以前使用命令：ctrl + r
+
+5、清除当前行：         ctrl + u
+
+6、清除至当前行尾：   ctrl + k
+
+7、单词为单位移动：option + 方向键
+
+
+Android studio快捷键：
+格式化代码：command+option+L
+
+重新导入：ctrl+option+o
+
+自动导包：option + enter
+
+查找方法：Command + F12
+
+查找文件：Command + O(严格匹配)/双击shift（模糊查找）
+
+调出generate窗口：Command + N
+
+跳转到属性/方法的声明或者查看使用：Command + B
+
+跳转到上一次编辑的位置：Command + shift + Backspace
+
+跳转到上/下一次焦点位置：Command + 【 / Command + 】
+
+定位到指定行：Command + L
+
+查看类层级：Control + H
+
+快捷定位到行首/尾：Cmd + Left/Right
+
+
+
