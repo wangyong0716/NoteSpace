@@ -9,3 +9,66 @@ sudio:/opt/android-studio
 密码３：0415+@+company name 周边游
 密码４：join time+@+short name
 
+
+
+
+学习资源：
+android源码在线看：
+http://androidxref.com/
+
+RxJava源码解析(一)从一个例子开始
+https://juejin.im/post/59bf894a5188256c6c3e25d8
+
+给 Android 开发者的 RxJava 详解
+http://gank.io/post/560e15be2dca930e00da1083
+
+kotlin
+https://www.kotlincn.net/docs/reference/visibility-modifiers.html
+
+nativePollOnce函数分析
+https://book.2cto.com/201208/1946.html
+
+
+
+老大难的 Java ClassLoader 再不理解就老了
+https://juejin.im/post/5c04892351882516e70dcc9b
+
+
+［Android进阶］Android消息机制
+https://blog.csdn.net/codeemperor/article/details/50931107
+
+[深入理解Android卷一全文-第六章]深入理解Binder
+https://blog.csdn.net/Innost/article/details/47208049
+
+深入解析String#intern
+https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html
+
+https://blog.csdn.net/yaomingyang/article/details/80981004
+
+资料
+https://github.com/justjavac/free-programming-books-zh_CN#web
+
+android：
+https://mp.weixin.qq.com/s/o8kJkTA5gzBnWc6sQVK4Mg
+https://mp.weixin.qq.com/s/ZxzdnbJ4UCqr89GNAdWuRw
+http://www.uml.org.cn/mobiledev/201607083.asp
+https://www.kancloud.cn/alex_wsc/android_depp/412922
+https://tech.meituan.com/2018/12/20/modular-event.html
+https://juejin.im/post/5a8fc6105188257a7349db4e
+
+java：
+https://blog.csdn.net/lengxiao1993/article/details/81568130
+https://www.cnblogs.com/woainifanfan/p/6602704.html
+https://mp.weixin.qq.com/s/CH9D-E7fxuu462Q2S3t0AA
+
+Kotlin：
+https://www.kotlincn.net/docs/reference/server-overview.html
+https://blog.csdn.net/axi295309066/article/details/78066500
+https://play.kotlinlang.org/byExample/01_introduction/01_Hello%20world
+
+
+
+
+
+
+
