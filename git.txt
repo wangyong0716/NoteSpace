@@ -80,4 +80,12 @@ git show <tag-name>
 将tag推送到远端：
 git push origin <tag-name>
 
+显示远程仓库：
+git remote -v
+添加远程仓库：
+git remote add <rep-name> <rep-remote-address>
+删除远程仓库：
+git remote remove <rep-name>
+修改仓库地址：
+git remote set-url <rep-name> <rep-new-address>
 
